@@ -3,13 +3,12 @@ package com.company;
 import java.util.List;
 
 public abstract class Automotor {
-    public static final String NOMBRECLASE = " ";
     private String patente;
-    private String tipoDeUso; //particular o profesional
+    private TipoDeUso tipoDeUso; //particular o profesional
     private Persona propietario;
     private List <Persona> autorizadosAConducir;
 
-    public Automotor(String patente, String tipoDeUso, Persona propietario, List <Persona> autorizadosAConducir) {
+    public Automotor(String patente, TipoDeUso tipoDeUso, Persona propietario, List <Persona> autorizadosAConducir) {
         this.patente = patente;
         this.tipoDeUso = tipoDeUso;
         this.propietario = propietario;
@@ -20,7 +19,7 @@ public abstract class Automotor {
         return patente;
     }
 
-    public String getTipoDeUso() {
+    public Enum <TipoDeUso> getTipoDeUso() {
         return tipoDeUso;
     }
 

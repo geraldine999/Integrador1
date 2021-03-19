@@ -2,14 +2,14 @@ package com.company;
 
 import jdk.jshell.execution.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class RegistroSeccional {
     private String nombre;
     private List<Automotor> automotoresRegistrados = new ArrayList<>();
+    private Set <String> patentes = new TreeSet<>();
+
 
     public RegistroSeccional(String nombre) {
         this.nombre = nombre;
@@ -25,14 +25,15 @@ public class RegistroSeccional {
 
    public void listarAutomotores() {
         for (Automotor auto  : automotoresRegistrados) {
-            System.out.print("Tipo de automotor: " + auto.NOMBRECLASE +
-                    " / Patente: " + auto.getPatente() +
-                    " / Tipo de uso: " + auto.getTipoDeUso() +
-                    " / Propietario: " + auto.getPropietario().getNombre() +
-                    " / Autorizados a conducir : ");
+            System.out.print("TIPO DE AUTOMOTOR: " + auto.getClass().getSimpleName() +
+                    " PATENTE: " + auto.getPatente() +
+                    " TIPO DE USO: " + auto.getTipoDeUso().name().toLowerCase(Locale.ROOT) +
+                    " PROPIETARIO: " + auto.getPropietario().getNombre() +
+                    " AUTORIZADOS A CONDUCIR: ");
                     for(Persona p: auto.getAutorizadosAConducir()){
                 System.out.println(p.getNombre()+ " ");
             }
+            System.out.println();
         }
 
     }
@@ -75,7 +76,7 @@ public class RegistroSeccional {
     }
 
     private void registrarAutomotor() {
-        String patente = "1"; //OJO CON ESTO!
+        String patente = " ";//OJO CON ESTO!
         Scanner sc3 = new Scanner(System.in);
         System.out.println("Qué tipo de automotor desea registrar?");
         System.out.println("1 = Moto Eléctrica 2= Auto Eléctrico 3= Moto Combustión");
@@ -122,28 +123,20 @@ public class RegistroSeccional {
 
         }
         System.out.println("Indique tipo de uso: ");
-        System.out.println(" 1= Particular // 2= Profesional");
-        String tipoDeUso = " ";
+        TipoDeUso tiposDeUsos[] = TipoDeUso.values();
+        for (TipoDeUso tU:tiposDeUsos) {
+            System.out.println(tU.getNumeroId() + " :"+ tU.name());
+
+        }
         int numerotipoDeUso = sc3.nextInt();
-        int salirSwitch = 0;
+        TipoDeUso tipoDeUso= TipoDeUso.PARTICULAR;
 
-        while(salirSwitch == 0){
-            switch (numerotipoDeUso) {
-                case 1:
-                    tipoDeUso = "Particular";
-                    salirSwitch = 1;
-                    break;
-
-                case 2:
-                    tipoDeUso = "Profesional";
-                    salirSwitch = 1;
-                    break;
-
-                default:
-                    System.out.println("Opción inválida. Inténtelo de nuevo");
-
+        for(int i = 0 ; i < tiposDeUsos.length; i++ ){
+            if(tiposDeUsos[i].getNumeroId() == numerotipoDeUso ){
+                tipoDeUso = tiposDeUsos[i];
             }
         }
+
 
         switch (opcionTipoAutomotor){
             case 1:
@@ -156,23 +149,23 @@ public class RegistroSeccional {
                 break;
             case 3:
                 MotoCombustion motoCombustion = new MotoCombustion(patente, tipoDeUso, propietario, autorizadosAConducirList);
-                //automotoresRegistrados.add(motoCombustion);
+                automotoresRegistrados.add(motoCombustion);
                 break;
             case 4:
                 AutoCombustion autoCombustion = new AutoCombustion(patente, tipoDeUso, propietario, autorizadosAConducirList);
-                //automotoresRegistrados.add(autoCombustion);
+                automotoresRegistrados.add(autoCombustion);
                 break;
             case 5:
                 Colectivo colectivo = new Colectivo(patente, tipoDeUso, propietario, autorizadosAConducirList);
-                //automotoresRegistrados.add(colectivo);
+                automotoresRegistrados.add(colectivo);
                 break;
             case 6:
                 Utilitario utilitario = new Utilitario(patente, tipoDeUso, propietario, autorizadosAConducirList);
-                //automotoresRegistrados.add(utilitario);
+                automotoresRegistrados.add(utilitario);
                 break;
             case 7:
                 Camion camion = new Camion(patente, tipoDeUso, propietario, autorizadosAConducirList);
-                //automotoresRegistrados.add(camion);
+                automotoresRegistrados.add(camion);
                 break;
         }
 

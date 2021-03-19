@@ -8,12 +8,10 @@ import java.util.Scanner;
 public class DNRPA {
 
     public static void main(String[] args) {
-        //ASIGNAR PATENTES RANDOM
-        //TERMINAR registrarAutomotor
-        //CARGAR ALGUNOS AUTOMMOTORES
-        //TODO agregar nombres clases (static final)
-        //TODO corregir tipo de automotor in listarAutomotores in RegistroSeccional
-        //TODO agregar ENUMS para tipos de usos
+        //todo CARGAR ALGUNOS AUTOMMOTORES
+        //TODO corregir Strings tipo de automotor y tipo de uso in listarAutomotores in RegistroSeccional
+        //todo sacar Registrable
+        //todo hacer que no se repitan las patentes
 
         //LA LISTA DE SECCIONALES ES FIJA
         //Porque no puedo crear seccionales de un dia para el otro
@@ -25,11 +23,15 @@ public class DNRPA {
         registrosSeccionales.add(new RegistroSeccional("Belgrano"));
 
         //MENU
-        MenuPrincipal menu = new MenuPrincipal();
+        /*MenuPrincipal menu = new MenuPrincipal();
 
         int numeroSeccionalElegida = menu.preguntarNumeroSeccionalElegida(registrosSeccionales);
 
-        registrosSeccionales.get(numeroSeccionalElegida).mostrarMenu();
+        registrosSeccionales.get(numeroSeccionalElegida).mostrarMenu();*/
+
+        Util util = new Util();
+
+        System.out.println(util.asignarPatente());
 
 
 
