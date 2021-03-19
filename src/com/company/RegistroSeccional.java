@@ -2,13 +2,14 @@ package com.company;
 
 import jdk.jshell.execution.Util;
 
-import java.lang.reflect.Array;
 import java.util.*;
+
 
 public class RegistroSeccional {
     private String nombre;
     private List<Automotor> automotoresRegistrados = new ArrayList<>();
-    private Set <String> patentes = new TreeSet<>();
+    private Set<String> patentes = new TreeSet<>();
+    private ClaseUtilitaria objetoUtilitario= new ClaseUtilitaria();
 
 
     public RegistroSeccional(String nombre) {
@@ -24,6 +25,7 @@ public class RegistroSeccional {
     }
 
    public void listarAutomotores() {
+       System.out.println();
         for (Automotor auto  : automotoresRegistrados) {
             System.out.print("TIPO DE AUTOMOTOR: " + auto.getClass().getSimpleName() +
                     " PATENTE: " + auto.getPatente() +
@@ -35,6 +37,7 @@ public class RegistroSeccional {
             }
             System.out.println();
         }
+       System.out.println();
 
     }
 
@@ -76,7 +79,13 @@ public class RegistroSeccional {
     }
 
     private void registrarAutomotor() {
-        String patente = " ";//OJO CON ESTO!
+        String patente= " ";
+        //si la patente se repite te genera una nueva hasta que no se repita
+        while(patentes.size() == automotoresRegistrados.size()) {
+            patente = objetoUtilitario.asignarPatente();
+            patentes.add(patente);
+        }
+
         Scanner sc3 = new Scanner(System.in);
         System.out.println("Qué tipo de automotor desea registrar?");
         System.out.println("1 = Moto Eléctrica 2= Auto Eléctrico 3= Moto Combustión");

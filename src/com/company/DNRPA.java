@@ -12,6 +12,7 @@ public class DNRPA {
         //TODO corregir Strings tipo de automotor y tipo de uso in listarAutomotores in RegistroSeccional
         //todo sacar Registrable
         //todo hacer que no se repitan las patentes
+        //todo en agregar autorizados a conducir si pones otro numero no te dice nada
 
         //LA LISTA DE SECCIONALES ES FIJA
         //Porque no puedo crear seccionales de un dia para el otro
@@ -23,15 +24,13 @@ public class DNRPA {
         registrosSeccionales.add(new RegistroSeccional("Belgrano"));
 
         //MENU
-        /*MenuPrincipal menu = new MenuPrincipal();
+        MenuPrincipal menu = new MenuPrincipal();
 
         int numeroSeccionalElegida = menu.preguntarNumeroSeccionalElegida(registrosSeccionales);
 
-        registrosSeccionales.get(numeroSeccionalElegida).mostrarMenu();*/
+        registrosSeccionales.get(numeroSeccionalElegida).mostrarMenu();
 
-        Util util = new Util();
 
-        System.out.println(util.asignarPatente());
 
 
 
