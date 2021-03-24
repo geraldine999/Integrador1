@@ -31,5 +31,7 @@ public abstract class Automotor {
         return autorizadosAConducir;
     }
 
-
+    public void setPropietario(Persona propietario) {
+        this.propietario = propietario;
+    }
 }

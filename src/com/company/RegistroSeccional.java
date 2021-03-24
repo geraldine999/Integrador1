@@ -2,6 +2,7 @@ package com.company;
 
 import jdk.jshell.execution.Util;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -10,6 +11,7 @@ public class RegistroSeccional {
     private List<Automotor> automotoresRegistrados = new ArrayList<>();
     private Set<String> patentes = new TreeSet<>();
     private ClaseUtilitaria objetoUtilitario= new ClaseUtilitaria();
+    private Map<String, LocalDate> fechasDeCambioDePropietario = new TreeMap<>(); //TODO esto esta bien??
 
 
     public RegistroSeccional(String nombre) {
@@ -41,44 +43,9 @@ public class RegistroSeccional {
 
     }
 
-    public void mostrarMenu() {
-        int salir = 0;
-        Scanner sc2 = new Scanner(System.in);
-        do {
-            System.out.println("1= Registrar automotor");
-            System.out.println("2= Listar automotores registrados en la seccional");
-            System.out.println("3= Listar a todos los propietarios de camiones en orden alfabético");
-            System.out.println("4= Modificar el propietario de un automotor");
-            System.out.println("5= Consultar si pasó 1 año o más desde el registro de un automotor");
-            System.out.println("0 = Salir");
-            System.out.print("Indique la opción deseada: ");
-            int opcion = sc2.nextInt();
-            switch (opcion) {
-                case 1:
-                    registrarAutomotor();
-                    break;
-                case 2:
-                    listarAutomotores();
-                    break;
-                case 3:
-                    mostrarPropietariosCamionesPorOrdenAlfabetico();
-                    break;
-                case 4:
-                    //modificarElPropietarioDeUnAutomotor();
-                    break;
-                case 5:
-                    //consultarSiPaso1AnioOMasDesdeElRegistroDeUnAuto();
-                    break;
-                case 0:
-                    salir = 1;
-                    break;
-                default:
-                    System.out.println("Opción inválida, intente de nuevo");
-            }
-        }while(salir == 0);
-    }
 
-    private void mostrarPropietariosCamionesPorOrdenAlfabetico() {
+
+    public void mostrarPropietariosCamionesPorOrdenAlfabetico() {
         ArrayList <String> propietariosDeCamiones = new ArrayList<>();
         for (Automotor auto: automotoresRegistrados) {
             if(auto.getClass().getSimpleName().equals("Camion")){
@@ -96,7 +63,7 @@ public class RegistroSeccional {
         System.out.println("---------------------------------------------");
     }
 
-    private void registrarAutomotor() {
+    public void registrarAutomotor() {
         String patente= " ";
         //si la patente se repite te genera una nueva hasta que no se repita
         while(patentes.size() == automotoresRegistrados.size()) {
@@ -110,15 +77,9 @@ public class RegistroSeccional {
         System.out.println("4 = Auto Combustión 5 = Colectivo 6 = Utilitario 7= Camión ");
         int opcionTipoAutomotor = sc3.nextInt();
         sc3.nextLine();// limpiar buffer
-        System.out.print("Nombre propietario: ");
-        String nombrePropietario = sc3.nextLine();
-        System.out.println();
-        System.out.print("DNI propietario: ");
-        String dniPropietario = sc3.nextLine();
-        System.out.println();
-        System.out.print("Dirección propietario: ");
-        String direccionPropietario = sc3.nextLine();
-        Persona propietario = new Persona(dniPropietario, nombrePropietario, direccionPropietario, true);
+
+        Persona propietario = objetoUtilitario.crearPersonaPropietarioOAutorizado("PROPIETARIO");
+
         System.out.println("Agregar autorizados a conducir? ");
         System.out.println(" 1 = SI // Otro numero = NO");
         List <Persona > autorizadosAConducirList = new ArrayList<>();
@@ -128,15 +89,8 @@ public class RegistroSeccional {
                 sc3.nextLine();// limpiar buffer
                 int otraVez = 0;
                 do {
-                    System.out.print("Nombre autorizado: ");
-                    String nombreAutorizado = sc3.nextLine();
-                    System.out.println();
-                    System.out.print("DNI autorizado: ");
-                    String dniAutorizado = sc3.nextLine();
-                    System.out.println();
-                    System.out.print("Dirección autorizado: ");
-                    String direccionAutorizado = sc3.nextLine();
-                    autorizadosAConducirList.add(new Persona(dniAutorizado, nombreAutorizado, direccionAutorizado, false));
+                    Persona autorizado = objetoUtilitario.crearPersonaPropietarioOAutorizado("AUTORIZADO");
+                    autorizadosAConducirList.add(autorizado);
                     System.out.println("Agregar otra persona autorizada?");
                     System.out.println("0= SI // Otro numero = NO");
                     otraVez = sc3.nextInt();
@@ -159,9 +113,9 @@ public class RegistroSeccional {
         TipoDeUso tipoDeUso= TipoDeUso.PARTICULAR;
 
         for(int i = 0 ; i < tiposDeUsos.length; i++ ){
-            if(tiposDeUsos[i].getNumeroId() == numerotipoDeUso ){
+            if(tiposDeUsos[i].getNumeroId() == numerotipoDeUso ){ //TODO aca creo que va valueOf()
                 tipoDeUso = tiposDeUsos[i];
-            }
+            } //TODO falta poner default o pedir de nuevo el numero
         }
 
 
@@ -196,5 +150,69 @@ public class RegistroSeccional {
                 break;
         }
 
+    }
+
+    public void mostrarMenu() {
+        int salir = 0;
+        Scanner sc2 = new Scanner(System.in);
+        do {
+            System.out.println("1= Registrar automotor");
+            System.out.println("2= Listar automotores registrados en la seccional");
+            System.out.println("3= Listar a todos los propietarios de camiones en orden alfabético");
+            System.out.println("4= Modificar el propietario de un automotor");
+            System.out.println("5= Consultar si pasó 1 año o más desde el registro de un automotor");
+            System.out.println("0 = Salir");
+            System.out.print("Indique la opción deseada: ");
+            int opcion = sc2.nextInt();
+            switch (opcion) {
+                case 1:
+                    registrarAutomotor();
+                    break;
+                case 2:
+                    listarAutomotores();
+                    break;
+                case 3:
+                    mostrarPropietariosCamionesPorOrdenAlfabetico();
+                    break;
+                case 4:
+                    modificarElPropietarioDeUnAutomotorYRegistarLaFecha();
+                    break;
+                case 5:
+                    //consultarSiPaso1AnioOMasDesdeElRegistroDeUnAuto();
+                    break;
+                case 0:
+                    salir = 1;
+                    break;
+                default:
+                    System.out.println("Opción inválida, intente de nuevo");
+            }
+        }while(salir == 0);
+    }
+
+    public void modificarElPropietarioDeUnAutomotorYRegistarLaFecha() { //TODO si el menu esta aca, da igual que ponga public oprivate??
+        System.out.println("-------------------------------------------------");
+        System.out.println("ESTOS SON LOS VEHICULOS REGISTRADOS: ");
+        listarAutomotores();
+        System.out.print("ESCRIBA LA PATENTE DEL VEHICULO A CAMBIAR SU PROPIETARIO: ");
+        Scanner sc = new Scanner(System.in);
+        String patente = sc.nextLine();
+
+        int listo = 1;
+
+        for (Automotor auto: automotoresRegistrados) {
+            if(auto.getPatente().equals(patente)){
+                Persona nuevoPropietario = objetoUtilitario.crearPersonaPropietarioOAutorizado("DEL NUEVO PROPIETARIO");
+                auto.setPropietario(nuevoPropietario);
+                System.out.println("LISTO, AHORA EL NUEVO PROPIETARIO DEL VEHICULO CON LA PATENTE "+ patente+ " ES "+ nuevoPropietario.getNombre());
+                listo = 0;
+                //registrar fecha
+                LocalDate fecha = LocalDate.now();
+                fechasDeCambioDePropietario.put(patente, fecha);
+            }
+        }
+        if(listo == 1){
+            System.out.println("NO SE ENCONTRO ESA PATENTE");
+        }
+        System.out.println("-------------------------------------------------");
     }
 }

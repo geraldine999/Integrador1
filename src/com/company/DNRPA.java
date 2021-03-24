@@ -12,7 +12,8 @@ public class DNRPA {
         //TODO corregir Strings tipo de automotor y tipo de uso in listarAutomotores in RegistroSeccional
         //todo sacar los nextInt y poner parseInt
         //todo agregar lineas y mensajes en  mayuscula
-        //todo cuando  agregas enums si pones una opcion que no va no te dice nada
+        //todo cuando  agregass un enum que no va no te dice nada
+
 
         //LA LISTA DE SECCIONALES ES FIJA
         //Porque no puedo crear seccionales de un dia para el otro
