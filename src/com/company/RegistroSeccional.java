@@ -25,7 +25,7 @@ public class RegistroSeccional {
     }
 
    public void listarAutomotores() {
-       System.out.println();
+       System.out.println("---------------------------------------------");
         for (Automotor auto  : automotoresRegistrados) {
             System.out.print("TIPO DE AUTOMOTOR: " + auto.getClass().getSimpleName() +
                     " PATENTE: " + auto.getPatente() +
@@ -37,7 +37,7 @@ public class RegistroSeccional {
             }
             System.out.println();
         }
-       System.out.println();
+       System.out.println("---------------------------------------------");
 
     }
 
@@ -61,7 +61,7 @@ public class RegistroSeccional {
                     listarAutomotores();
                     break;
                 case 3:
-                    //mostrarPropietariosCamionesPorOrdenAlfabetico();
+                    mostrarPropietariosCamionesPorOrdenAlfabetico();
                     break;
                 case 4:
                     //modificarElPropietarioDeUnAutomotor();
@@ -76,6 +76,24 @@ public class RegistroSeccional {
                     System.out.println("Opción inválida, intente de nuevo");
             }
         }while(salir == 0);
+    }
+
+    private void mostrarPropietariosCamionesPorOrdenAlfabetico() {
+        ArrayList <String> propietariosDeCamiones = new ArrayList<>();
+        for (Automotor auto: automotoresRegistrados) {
+            if(auto.getClass().getSimpleName().equals("Camion")){
+                String propietarioNuevo = auto.getPropietario().getNombre();
+                propietariosDeCamiones.add(propietarioNuevo);
+            }
+
+        }
+        Collections.sort(propietariosDeCamiones);
+        System.out.println("---------------------------------------------");
+        for (String propietario: propietariosDeCamiones) {
+            System.out.println(propietario);
+
+        }
+        System.out.println("---------------------------------------------");
     }
 
     private void registrarAutomotor() {
@@ -102,7 +120,7 @@ public class RegistroSeccional {
         String direccionPropietario = sc3.nextLine();
         Persona propietario = new Persona(dniPropietario, nombrePropietario, direccionPropietario, true);
         System.out.println("Agregar autorizados a conducir? ");
-        System.out.println(" 1 = SI // 2 = NO");
+        System.out.println(" 1 = SI // Otro numero = NO");
         List <Persona > autorizadosAConducirList = new ArrayList<>();
         int autorizadosAConducir = sc3.nextInt();
         switch(autorizadosAConducir){
@@ -125,7 +143,7 @@ public class RegistroSeccional {
                 }while(otraVez == 0);
                 break;
 
-            case 2:
+            default:
 
                 System.out.println("Ok. El automotor no tiene autorizados a conducir");
                 break;

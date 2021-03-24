@@ -3,7 +3,7 @@ package com.company;
 public enum TipoDeUso {
     PARTICULAR(1),
     PROFESIONAL(2),
-    PARTICULARDEUSOPROFESIONAL(3);
+    PARTICULAR_DE_USO_PROFESIONAL(3);
 
     private int numeroId;
 
