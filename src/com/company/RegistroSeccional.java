@@ -3,6 +3,7 @@ package com.company;
 import jdk.jshell.execution.Util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -11,6 +12,7 @@ public class RegistroSeccional {
     private List<Automotor> automotoresRegistrados = new ArrayList<>();
     private Set<String> patentes = new TreeSet<>();
     private ClaseUtilitaria objetoUtilitario= new ClaseUtilitaria();
+    private Map<String, LocalDate> fechasDeAltaDeAutomotor = new TreeMap<>();
     private Map<String, LocalDate> fechasDeCambioDePropietario = new TreeMap<>(); //TODO esto esta bien??
 
 
@@ -37,6 +39,8 @@ public class RegistroSeccional {
                     for(Persona p: auto.getAutorizadosAConducir()){
                 System.out.println(p.getNombre()+ " ");
             }
+
+            System.out.println("FECHA DE ALTA: "+ fechasDeAltaDeAutomotor.get(auto.getPatente()).format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
             System.out.println();
         }
        System.out.println("---------------------------------------------");
@@ -149,6 +153,10 @@ public class RegistroSeccional {
                 automotoresRegistrados.add(camion);
                 break;
         }
+
+        LocalDate fecha = LocalDate.now();
+
+        fechasDeAltaDeAutomotor.put(patente, fecha);
 
     }
 
