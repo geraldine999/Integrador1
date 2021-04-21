@@ -3,7 +3,7 @@ Integrador de Registro Automotor
 Ejercicio integrador Módulo 4 de Java
 Java Standard
 
-Fecha de entrega: sábado 3 de abril de 2021.
+Fecha de entrega: sábado 10 de abril de 2021.
 
 La DNRPA (Dirección Nac. Reg. Propiedad del Automotor) necesita un sistema para anotar todos los vehículos registrados en el país.--
 La DNRPA tiene Registros seccionales.--
