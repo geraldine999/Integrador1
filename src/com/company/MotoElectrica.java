@@ -15,6 +15,6 @@ public class MotoElectrica extends Automotor implements VehiculoElectrico{
 
     @Override
     public void indicarVoltaje() {
-        System.out.println("Soy una Moto Electrica y tengo un volataje de 220V");
+        System.out.println("Soy una Moto Eléctrica y tengo un volataje de 220V");
     }
 }

@@ -15,6 +15,6 @@ public class MotoCombustion extends Automotor implements VehiculoACombustion{
 
     @Override
     public void indicarCapacidadDelTanque() {
-        System.out.println("Soy una Moto a Combustion y la capacidad de mi tanque es de 8 litros");
+        System.out.println("Soy una Moto a Combustión y la capacidad de mi tanque es de 8 litros");
     }
 }

@@ -27,24 +27,132 @@ public class RegistroSeccional {
         return automotoresRegistrados;
     }
 
-    public void listarAutomotores() {
-        System.out.println("---------------------------------------------");
-        for (Automotor auto : automotoresRegistrados) {
-            System.out.print("TIPO DE AUTOMOTOR: " + auto.getClass().getSimpleName() +
-                    " PATENTE: " + auto.getPatente() +
-                    " TIPO DE USO: " + auto.getTipoDeUso().name().toLowerCase(Locale.ROOT) +
-                    " PROPIETARIO: " + auto.getPropietario().getNombre() +
-                    " AUTORIZADOS A CONDUCIR: ");
-            for (Persona p : auto.getAutorizadosAConducir()) {
-                System.out.println(p.getNombre() + " ");
-            }
-
-            System.out.println("FECHA DE ALTA: " + auto.getFechaDeAltaDeAutomotor().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+    public void mostrarMenu() {
+        int salir = 0;
+        Scanner sc2 = new Scanner(System.in);
+        do {
+            System.out.println("1= Registrar automotor");
+            System.out.println("2= Listar automotores registrados en la seccional desde cierta fecha");
+            System.out.println("3= Listar a todos los propietarios de camiones en orden alfabético");
+            System.out.println("4= Modificar el propietario de un automotor (La fecha de cambio quedará registrada)");
+            System.out.println("5= Consultar si pasó 1 año o más desde el registro de un automotor o desde el cambio de su propietario");
+            System.out.println("6= Listar por tipo de automotor");
+            System.out.println("0 = Salir de esta seccional");
+            System.out.print("Indique la opción deseada: ");
+            int opcion = Integer.parseInt(sc2.nextLine());
             System.out.println();
+            switch (opcion) {
+                case 1:
+                    registrarAutomotor();
+                    break;
+                case 2:
+                    listarAutomotoresDesdeCiertaFecha();
+                    break;
+                case 3:
+                    mostrarPropietariosCamionesPorOrdenAlfabetico();
+                    break;
+                case 4:
+                    modificarElPropietarioDeUnAutomotorYRegistarLaFecha();
+                    break;
+                case 5:
+                    consultarSiPaso1AnioOMasDesdeElRegistroDeUnAutoOCambioDeTitular();
+                    break;
+                case 6:
+                    listarVehiculosPorTipoDeAutomotor();
+                    break;
+                case 0:
+                    salir = 1;
+                    break;
+                default:
+                    System.out.println("OPCIÓN INVÁLIDA, INTENTE DE NUEVO");
+            }
+        } while (salir == 0);
+    }
+
+    private void listarVehiculosPorTipoDeAutomotor() {
+        int opcionTipoAutomotor = indicarTipoDeAutomotor();
+        String nombreClase = "";
+        switch(opcionTipoAutomotor){
+            case 1:
+                nombreClase = "MotoElectrica";
+                break;
+            case 2:
+                nombreClase = "AutoElectrico";
+                break;
+            case 3:
+                nombreClase = "MotoCombustion";
+                break;
+            case 4:
+                nombreClase = "AutoCombustion";
+                break;
+            case 5:
+                nombreClase = "Colectivo";
+                break;
+            case 6:
+                nombreClase = "Utilitario";
+                break;
+            case 7:
+                nombreClase = "Camion";
+                break;
+
         }
-        System.out.println("---------------------------------------------");
+        for(Automotor auto : automotoresRegistrados){
+            if(auto.getClass().getSimpleName().equals(nombreClase)){
+                mostrarCaracteristicasDelAutomotor(auto);
+            }
+        }
+
 
     }
+
+
+    public void listarAutomotoresDesdeCiertaFecha() {
+        //LIMITAR LOS VEHICULOS QUE SE MUESTRAN POR FECHA
+        int deNuevo2 = 1;
+        Scanner sc = new Scanner(System.in);
+        int anio = 1;
+        do {
+            System.out.println("INDIQUE DESDE QUE FECHA DESEA VER LOS VEHÍCULOS REGISTRADOS:");
+            System.out.print("AÑO:");
+            try {
+                anio = Integer.parseInt(sc.nextLine());
+                if (anio > LocalDate.now().getYear()) {
+                    System.out.println("EL AÑO INGRESADO NO PUEDE SER MAYOR AL AÑO ACTUAL");
+                } else {
+                    deNuevo2 = 0;
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("VALOR INGRESADO INVÁLIDO. POR FAVOR INTENTE DE NUEVO");
+            }
+        } while (deNuevo2 == 1);
+        System.out.println("---------------------------------------------");
+        for (Automotor auto : automotoresRegistrados) {
+            if (auto.getFechaDeAltaDeAutomotor().getYear() >= anio) {
+                mostrarCaracteristicasDelAutomotor(auto);
+            }
+        }
+    }
+
+    public void mostrarCaracteristicasDelAutomotor(Automotor auto){
+
+                System.out.print("TIPO DE AUTOMOTOR: " + auto.getClass().getSimpleName() +
+                        " PATENTE: " + auto.getPatente() +
+                        " TIPO DE USO: " + auto.getTipoDeUso().name().toLowerCase(Locale.ROOT) +
+                        " PROPIETARIO: " + auto.getPropietario().getNombre() +
+                        " AUTORIZADOS A CONDUCIR: ");
+                for (Persona p : auto.getAutorizadosAConducir()) {
+                    System.out.println(p.getNombre() + " ");
+                }
+
+                System.out.println("FECHA DE ALTA: " + auto.getFechaDeAltaDeAutomotor().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")));
+                System.out.println();
+
+                System.out.println("---------------------------------------------");
+            }
+
+
+
 
 
     public void mostrarPropietariosCamionesPorOrdenAlfabetico() {
@@ -76,30 +184,15 @@ public class RegistroSeccional {
             patentes.add(patente);
         }
 
+        int opcionTipoAutomotor = indicarTipoDeAutomotor();
         Scanner sc3 = new Scanner(System.in);
-        int deNuevo = 1;
-        int opcionTipoAutomotor = 1;
-        do {
-            System.out.println("QUÉ TIPO DE AUTOMOTOR DESEA REGISTRAR?");
-            System.out.println("1 = Moto Eléctrica 2= Auto Eléctrico 3= Moto Combustión");
-            System.out.println("4 = Auto Combustión 5 = Colectivo 6 = Utilitario 7= Camión ");
-            try {
-                opcionTipoAutomotor = Integer.parseInt(sc3.nextLine());
-                if (opcionTipoAutomotor > 7 || opcionTipoAutomotor < 1) {
-                    System.out.println("NÚMERO INVÁLIDO, POR FAVOR INTENTE DE NUEVO");
-                }else{
-                    deNuevo =0;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("CARACTER INVÁLIDO, POR FAVOR INTENTE DE NUEVO");
-            }
-        }while(deNuevo ==1);
 
         Persona propietario = crearPersonaPropietarioOAutorizado("PROPIETARIO");
 
         System.out.println("AGREGAR AUTORIZADOS A CONDUCIR? ");
         System.out.println(" 1 = SI // OTRO NÚMERO = NO");
         List<Persona> autorizadosAConducirList = new ArrayList<>();
+
         int autorizadosAConducir = Integer.parseInt(sc3.nextLine());
         switch (autorizadosAConducir) {
             case 1:
@@ -120,6 +213,7 @@ public class RegistroSeccional {
 
         }
         int deVuelta = 0;
+
         TipoDeUso tipoDeUso = TipoDeUso.PARTICULAR;
         do {
             System.out.println("INDIQUE TIPO DE USO: ");
@@ -172,53 +266,37 @@ public class RegistroSeccional {
 
     }
 
-    public void mostrarMenu() {
-        int salir = 0;
-        Scanner sc2 = new Scanner(System.in);
+    public int indicarTipoDeAutomotor() {
+        Scanner sc3 = new Scanner(System.in);
+        int deNuevo = 1;
+        int opcionTipoAutomotor = 1;
         do {
-            System.out.println("1= Registrar automotor");
-            System.out.println("2= Listar automotores registrados en la seccional");
-            System.out.println("3= Listar a todos los propietarios de camiones en orden alfabético");
-            System.out.println("4= Modificar el propietario de un automotor (La fecha de cambio quedara registrada)");
-            System.out.println("5= Consultar si pasó 1 año o más desde el registro de un automotor o desde el cambio de su propietario");
-            System.out.println("0 = Salir de esta seccional");
-            System.out.print("Indique la opción deseada: ");
-            int opcion = Integer.parseInt(sc2.nextLine());
-            System.out.println();
-            switch (opcion) {
-                case 1:
-                    registrarAutomotor();
-                    break;
-                case 2:
-                    listarAutomotores();
-                    break;
-                case 3:
-                    mostrarPropietariosCamionesPorOrdenAlfabetico();
-                    break;
-                case 4:
-                    modificarElPropietarioDeUnAutomotorYRegistarLaFecha();
-                    break;
-                case 5:
-                    consultarSiPaso1AnioOMasDesdeElRegistroDeUnAutoOCambioDeTitular();
-                    break;
-                case 0:
-                    salir = 1;
-                    break;
-                default:
-                    System.out.println("OPCIÓN INVÁLIDA, INTENTE DE NUEVO");
+            System.out.println("INDIQUE EL TIPO DE AUTOMOTOR");
+            System.out.println("1 = Moto Eléctrica 2= Auto Eléctrico 3= Moto Combustión");
+            System.out.println("4 = Auto Combustión 5 = Colectivo 6 = Utilitario 7= Camión ");
+            try {
+                opcionTipoAutomotor = Integer.parseInt(sc3.nextLine());
+                if (opcionTipoAutomotor > 7 || opcionTipoAutomotor < 1) {
+                    System.out.println("NÚMERO INVÁLIDO, POR FAVOR INTENTE DE NUEVO");
+                }else{
+                    deNuevo =0;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("CARACTER INVÁLIDO, POR FAVOR INTENTE DE NUEVO");
             }
-        } while (salir == 0);
+        }while(deNuevo ==1);
+        return opcionTipoAutomotor;
     }
 
+
     public String listarVehiculosPorPatentePreguntarAlUsuarioPatenteValidarlaYDevolverla(String accion) {
+        Scanner sc = new Scanner(System.in);
         System.out.println("-------------------------------------------------");
-        System.out.println("ESTOS SON LOS VEHÍCULOS REGISTRADOS: ");
-        listarAutomotores();
+        listarAutomotoresDesdeCiertaFecha();
         int deNuevo = 1;
         String patente = "";
         do {
             System.out.print("ESCRIBA LA PATENTE DEL VEHÍCULO A " + accion);
-            Scanner sc = new Scanner(System.in);
             patente = sc.nextLine().toUpperCase(Locale.ROOT);
             if (!patentes.contains(patente)) {
                 System.out.println("NO SE ENCONTRÓ ESA PATENTE");
@@ -339,7 +417,7 @@ public class RegistroSeccional {
                 deNuevo = 0;
 
             }else{
-                System.out.println("EL NOMBRE NO PUEDE ESTAR VACÍO, DEBE CONTENER ENTRE 3 Y 45 CARACTERES Y NO DEBE TENER NÚMEROS");
+                System.out.println("EL NOMBRE NO PUEDE ESTAR VACÍO, DEBE CONTENER ENTRE 3 Y 45 CARACTERES Y NO DEBE TENER NÚMEROS NI CARACTERES ESPECIALES");
                 System.out.println("POR FAVOR INTENTE DE NUEVO");
             }
         }while(deNuevo == 1);
@@ -352,24 +430,44 @@ public class RegistroSeccional {
             if (dni.matches("([0-9]){8}")) {
                 deNuevo =0;
             }else{
-                System.out.println("EL DNI NO PUEDE ESTAR VACÍO, DEBE CONTENER 8 NÚMEROS Y NO DEBE TENER LETRAS");
+                System.out.println("EL DNI NO PUEDE ESTAR VACÍO, DEBE CONTENER 8 NÚMEROS Y NO DEBE TENER LETRAS NI CARACTERES ESPECIALES");
                 System.out.println("POR FAVOR INTENTE DE NUEVO");
             }
         }while(deNuevo ==1);
         System.out.println();
-        deNuevo =1;
+        int deNuevo2 = 1;
+        int deNuevo3 = 1;
+        String calle ="";
+        String numero="";
         do {
-            System.out.print("DIRECCIÓN " + propietarioOAutorizado + " (CALLE Y NÚMERO): ");
-            direccion = sc.nextLine();
-            if (direccion.matches("((([a-zA-Z]+ [ ]*)+) [0-9]+){4,45}")) {
-                deNuevo =0;
+            System.out.println("DIRECCIÓN " + propietarioOAutorizado+ " :" );
+            do{
+                System.out.print("CALLE: ");
+                calle = sc.nextLine();
+                if(calle.matches("([a-zA-Z0-9]+[ ]*)+")){
+                    deNuevo2 =0;
+                }else{
+                    System.out.println("EL NOMBRE DE LA CALLE NO PUEDE TENER CARACTERES ESPECIALES NI ESTAR VACÍO");
+                    System.out.println("POR FAVOR INTENTE DE NUEVO");
+                }
+            } while(deNuevo2 ==1);
+            do {
+                System.out.print("NÚMERO: ");
+                numero = sc.nextLine();
+                if (numero.matches("[0-9]+")) {
+                    deNuevo3 = 0;
 
-            }else{
-                System.out.println("LA DIRECCIÓN NO PUEDE ESTAR VACÍA, DEBE CONTENER ENTRE 4 Y 45 CARACTERES Y DEBE CONTENER LETRAS Y NÚMEROS");
-                System.out.println("POR FAVOR INTENTE DE NUEVO");
-            }
+
+                } else {
+                    System.out.println("EL NÚMERO NO PUEDE ESTAR VACÍO, NO PUEDE TENER CARACTERES ESPECIALES NI LETRAS");
+                    System.out.println("POR FAVOR INTENTE DE NUEVO");
+                }
+            } while (deNuevo3 == 1) ;
+
         }while(deNuevo ==1);
+        direccion = calle + " "+ numero;
         Persona persona = new Persona(dni, nombre, direccion);
         return persona;
+
     }
 }

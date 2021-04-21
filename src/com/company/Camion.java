@@ -15,6 +15,6 @@ public class Camion extends Automotor implements VehiculoACombustion{
 
     @Override
     public void indicarCapacidadDelTanque() {
-        System.out.println("Soy un Camion y la capacidad de mi tanque es de 500 litros");
+        System.out.println("Soy un Camión y la capacidad de mi tanque es de 500 litros");
     }
 }
